@@ -12,6 +12,8 @@ Users register, take timed quizzes, see detailed answer reviews and compete on a
 - Automatic scoring and a review page showing correct vs your answers
 - Per-quiz leaderboard (best score per user) and "My results" history
 - Admin panel to add quizzes, questions and choices
+-Practice mode with instant answer feedback
+-Time taken shown on quiz results
 
 ## Run it
 
@@ -24,7 +26,7 @@ pip install -r requirements.txt
 
 python manage.py makemigrations quiz
 python manage.py migrate
-python manage.py seed_demo         # adds 2 sample quizzes
+python manage.py seed_demo         # adds 4 sample quizzes
 python manage.py createsuperuser   # for /admin/ (to add your own quizzes)
 python manage.py runserver
 ```
