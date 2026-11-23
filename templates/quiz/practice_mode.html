@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Practice Mode - QuizMaster{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h2>{{ quiz.title }} - Practice Mode</h2>
+
+    <p class="muted">
+        Practice without a timer. Select an answer to check it immediately.
+    </p>
+</div>
+
+{% for question in questions %}
+
+<div class="card practice-question">
+
+    <h3>
+        {{ forloop.counter }}. {{ question.text }}
+    </h3>
+
+    <div class="practice-choices">
+        {% for choice in question.choices.all %}
+        <button
+            type="button"
+            class="practice-choice"
+            data-correct="{{ choice.is_correct|yesno:'YES,NO' }}"
+            onclick="checkPracticeAnswer(this)"
+        >
+            {{ choice.text }}
+        </button>
+        {% endfor %}
+    </div>
+
+    <p class="practice-feedback"></p>
+
+</div>
+
+{% endfor %}
+
+<script>
+function checkPracticeAnswer(button) {
+    const question = button.closest(".practice-question");
+    const buttons = question.querySelectorAll(".practice-choice");
+    const feedback = question.querySelector(".practice-feedback");
+
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    if (button.dataset.correct === "YES") {
+        button.classList.add("correct");
+        feedback.textContent = "✅ Correct!";
+    } else {
+        button.classList.add("wrong");
+        feedback.textContent = "❌ Wrong answer.";
+
+        buttons.forEach(btn => {
+            if (btn.dataset.correct === "YES") {
+                btn.classList.add("correct");
+            }
+        });
+    }
+}
+</script>
+
+{% endblock %}

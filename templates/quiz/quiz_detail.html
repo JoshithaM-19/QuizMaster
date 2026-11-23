@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ quiz.title }} - QuizMaster{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <span class="tag">{{ quiz.category }}</span>
+  <h2>{{ quiz.title }}</h2>
+  <p>{{ quiz.description }}</p>
+  <ul class="info-list">
+    <li>📝 {{ num_questions }} questions</li>
+    <li>⏱️ {{ quiz.time_limit_minutes }} minutes</li>
+    {% if best is not None %}<li>🏅 Your best score: {{ best }}/{{ num_questions }}</li>{% endif %}
+  </ul>
+
+  {% if user.is_authenticated %}
+    <div class="quiz-actions">
+
+    <form method="post" action="{% url 'quiz_start' quiz.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Start quiz</button>
+    </form>
+
+    <a href="{% url 'practice_mode' quiz.pk %}" class="btn btn-outline">
+        Practice Mode
+    </a>
+
+</div>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}" class="btn">Login to start</a></p>
+  {% endif %}
+  <p><a href="{% url 'leaderboard' quiz.pk %}">View leaderboard →</a></p>
+</div>
+{% endblock %}

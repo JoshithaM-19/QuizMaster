@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Result - QuizMaster{% endblock %}
+{% block content %}
+<div class="card result-head">
+  <h2>{{ attempt.quiz.title }}</h2>
+  <div class="score">{{ attempt.score }} / {{ attempt.total }}</div>
+  <p class="muted">{{ attempt.percent }}% correct</p>
+ <p class="muted">
+  Time taken:
+  {% if attempt.time_taken %}
+    {{ attempt.time_taken }}
+  {% else %}
+    —
+  {% endif %}
+</p>
+  <a href="{% url 'leaderboard' attempt.quiz.pk %}" class="btn btn-small">Leaderboard</a>
+  <a href="{% url 'quiz_detail' attempt.quiz.pk %}" class="btn btn-small btn-outline">Try again</a>
+</div>
+
+<h3>Review your answers</h3>
+{% for item in review %}
+  <div class="card review {% if item.answer.is_correct %}right{% else %}wrong{% endif %}">
+    <h4>{{ forloop.counter }}. {{ item.answer.question.text }}</h4>
+    <p>
+      Your answer:
+      {% if item.answer.choice %}
+        <strong>{{ item.answer.choice.text }}</strong>
+      {% else %}
+        <em>not answered</em>
+      {% endif %}
+      {% if item.answer.is_correct %}✅{% else %}❌{% endif %}
+    </p>
+    {% if not item.answer.is_correct and item.correct %}
+      <p>Correct answer: <strong>{{ item.correct.text }}</strong></p>
+    {% endif %}
+  </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}My results - QuizMaster{% endblock %}
+{% block content %}
+<h2>My results</h2>
+<div class="card">
+  {% if attempts %}
+    <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Quiz</th><th>Score</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+      {% for a in attempts %}
+        <tr>
+          <td>{{ a.quiz.title }}</td>
+          <td>{{ a.score }}/{{ a.total }} ({{ a.percent }}%)</td>
+          <td>{{ a.finished_at|date:"d M Y, H:i" }}</td>
+          <td class="right"><a href="{% url 'attempt_result' a.pk %}">Review</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  {% else %}
+    <p class="muted">You haven't taken any quiz yet. <a href="{% url 'quiz_list' %}">Start one</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard - QuizMaster{% endblock %}
+{% block content %}
+<h2>🏆 Leaderboard: {{ quiz.title }}</h2>
+<div class="card">
+  {% if rows %}
+    <table class="table">
+      <thead><tr><th>#</th><th>User</th><th>Best score</th><th class="right">Attempts</th></tr></thead>
+      <tbody>
+      {% for row in rows %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ row.user__username }}</td>
+          <td>{{ row.best }}/{{ num_questions }}</td>
+          <td class="right">{{ row.tries }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="muted">No one has finished this quiz yet. Be the first!</p>
+  {% endif %}
+</div>
+<a href="{% url 'quiz_detail' quiz.pk %}">← Back to quiz</a>
+{% endblock %}
